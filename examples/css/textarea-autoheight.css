@@ -1,0 +1,13 @@
+.textarea-autoheight {
+  border: 1px solid #eeeeee;
+  cursor: text;
+  padding: 10px;
+}
+
+.textarea-autoheight:hover {
+  border-color: #dddddd;
+}
+
+.textarea-autoheight.focus {
+  border-color: #cccccc;
+}
