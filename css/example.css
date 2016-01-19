@@ -1,0 +1,27 @@
+body {
+  background-color: #ffffff;
+  color: #555555;
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+  margin: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+a {
+  color: dodgerblue;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #49a9ff;
+}
+
+textarea {
+  color: inherit;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 20px;
+}
