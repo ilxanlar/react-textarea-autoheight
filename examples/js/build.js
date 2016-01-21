@@ -19069,6 +19069,8 @@ var Textarea = (function (_Component) {
     this.state = {
       focus: false
     };
+    this.resizeTimeout = 0;
+    this.resizeIntervalDelay = 50;
     this.decreasePixels = 1;
   }
 
@@ -19078,18 +19080,50 @@ var Textarea = (function (_Component) {
       var area = this.refs.area;
 
       area.style.height = area.scrollHeight + 'px';
+
+      if (window.attachEvent) {
+        window.attachEvent('onresize', this.resize.bind(this));
+      } else {
+        window.addEventListener('resize', this.resize.bind(this));
+      }
     }
   }, {
-    key: 'change',
-    value: function change() {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      if (window.detachEvent) {
+        window.detachEvent('onresize', this.resize.bind(this));
+      } else {
+        window.removeEventListener('resize', this.resize.bind(this));
+      }
+    }
+  }, {
+    key: 'reHeight',
+    value: function reHeight() {
       var area = this.refs.area;
-      var onChange = this.props.onChange;
 
       area.style.height = area.scrollHeight + 'px';
 
       while (area.clientHeight >= area.scrollHeight) {
         area.style.height = area.clientHeight - this.decreasePixels + 'px';
       }
+    }
+  }, {
+    key: 'resize',
+    value: function resize() {
+      var _this = this;
+
+      window.clearTimeout(this.resizeTimeout);
+
+      this.resizeTimeout = window.setTimeout(function () {
+        _this.reHeight();
+      }, this.resizeIntervalDelay);
+    }
+  }, {
+    key: 'change',
+    value: function change() {
+      var onChange = this.props.onChange;
+
+      this.reHeight();
 
       if (onChange) {
         onChange.apply(undefined, arguments);

@@ -20,19 +20,50 @@ export default class Textarea extends Component {
     const {area} = this.refs;
 
     area.style.height = `${area.scrollHeight}px`;
+
+    if (window.attachEvent) {
+      window.attachEvent('onresize', this.resize.bind(this));
+    } else {
+      window.addEventListener('resize', this.resize.bind(this));
+    }
   }
+
+  componentWillUnmount() {
+    if (window.detachEvent) {
+      window.detachEvent('onresize', this.resize.bind(this));
+    } else {
+      window.removeEventListener('resize', this.resize.bind(this));
+    }
+  }
+
+  resizeTimeout = 0;
+
+  resizeIntervalDelay = 50;
 
   decreasePixels = 1;
 
-  change(...params) {
+  reHeight() {
     const {area} = this.refs;
-    const {onChange} = this.props;
 
     area.style.height = `${area.scrollHeight}px`;
 
     while (area.clientHeight >= area.scrollHeight) {
       area.style.height = `${area.clientHeight - this.decreasePixels}px`;
     }
+  }
+
+  resize() {
+    window.clearTimeout(this.resizeTimeout);
+
+    this.resizeTimeout = window.setTimeout(() => {
+      this.reHeight();
+    }, this.resizeIntervalDelay);
+  }
+
+  change(...params) {
+    const {onChange} = this.props;
+
+    this.reHeight();
 
     if (onChange) {
       onChange(...params);
