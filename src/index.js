@@ -19,7 +19,7 @@ export default class Textarea extends Component {
   componentDidMount() {
     const {area} = this.refs;
 
-    area.style.height = area.scrollHeight + 'px';
+    area.style.height = `${area.scrollHeight}px`;
   }
 
   decreasePixels = 1;
@@ -28,7 +28,7 @@ export default class Textarea extends Component {
     const {area} = this.refs;
     const {onChange} = this.props;
 
-    area.style.height = area.scrollHeight + 'px';
+    area.style.height = `${area.scrollHeight}px`;
 
     while (area.clientHeight >= area.scrollHeight) {
       area.style.height = `${area.clientHeight - this.decreasePixels}px`;
